@@ -1,0 +1,296 @@
+<!-- written by kja8147, 2020 -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<style>@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');</style>
+<style>
+	#logo{ 
+		margin-top:15px;
+		margin-left:15px;
+		margin-right:15px;
+		width:140px; 
+		height:140px;
+		border-radius:70%; 
+		border: 1px solid gray;
+		display:inline-block;
+	}
+	hr{display:inline-block; width:33%;}
+	#hrs{ text-align:center;  width:100%;}
+	body{font-family: 'Jua'; font-size:20px;}
+	#menuTxt{color:black; font-size:15px; margin-right:5px;  margin-left:5px;}
+	table{ display:inline-block; border-spacing:5px;}
+	td{width:150px;}
+	a{text-decoration:none; color:#00ADE2;}
+	.menu{ margin-left:10px; text-align:center; }
+	.menu img{ width:70px; height:70px; border-radius:70%; }
+	img{width:300px; height:300px;}
+	input[type=button]{ 
+		font-size:13px; 
+		background-color:#98CC6E;
+		border-radius:10px;
+		border:0px;
+		width:60px;
+		height:30px;
+		font-weight:bold;
+	}
+	.context{
+		margin:auto; 
+		text-align:center; 
+		left:50%;
+		border-spacing:40px;
+	}
+	.modal{
+		width:500px; 
+		height:300px;
+		background-color:#E8E8E8; 
+		border-radius:10px; 
+		margin:auto; 
+		text-align:center; 
+	}
+	.modal-wrapper{
+		position:fixed; 
+		top:0; 
+		left:0; 
+		width:100%; 
+		height:100%; 
+		background:rgba(0,0,0,0.6); 
+	}
+	.modalImg{display:inline-block; width:200px; height:200px; margin-top:45px; }
+	.modalTable{border-spacing:15px; margin-bottom:40px; text-align:left;}
+	.close{float:right; margin-right:20px;  margin-top:5px; font-size:25px;}
+	#tabDiv{width:100%; text-align:center;}
+	#names{font-size:20px; }
+	#tags{ font-size:15px;}
+	#poss{font-size:15px;}
+	
+</style>
+
+<!-- 춘천 홍보용 데이터들 -->
+<script>
+	var cafeImg=['images/cafe1.jpg','images/cafe2.jpg','images/cafe3.jpg'];
+	var dessertImg=['images/dessert1.jpg','images/dessert2.jpg','images/dessert3.jpg'];
+	var hansikImg=['images/han1.jpg','images/han2.jpg','images/han3.jpg'];
+	var yangsikImg=['images/yang1.jpg','images/yang2.jpg','images/yang3.jpg'];
+	var ilsikImg=['images/il1.jpg','images/il2.jpg','images/il3.jpg'];
+	var jungsikImg=['images/jung1.jpg','images/jung2.jpg','images/jung3.jpg'];
+	var meetImg=['images/meet1.jpg','images/meet2.jpg','images/meet3.jpg'];
+	var nightImg=['images/sul1.jpg','images/sul2.jpg','images/sul3.jpg'];
+	var natureImg=['images/nat1.jpg','images/nat2.jpg','images/nat3.jpg'];
+	var landmarkImg=['images/land1.jpg','images/land2.jpg','images/land3.jpg'];
+	var parkImg=['images/park1.jpg','images/park2.jpg','images/park3.jpg'];
+	var playingImg=['images/play1.jpg'];
+	var shopImg=['images/shop1.jpg','images/shop2.jpg'];
+	var sportsImg=['images/sport1.jpg','images/sports2.jpg','images/sports3.jpg'];
+	var carImg=['images/car.jpg'];
+	var railImg=['images/rail.png'];
+	var itxImg=['images/itx.jpg'];
+	var bus1Img=['images/bus1.png'];
+	var bus2Img=['images/bus2.jpg'];
+	var imgArr=[cafeImg,dessertImg,hansikImg,yangsikImg,ilsikImg,jungsikImg,meetImg,nightImg,natureImg,landmarkImg,parkImg,playingImg,shopImg,sportsImg,carImg,railImg,itxImg,bus1Img,bus2Img];
+
+
+	var cafeTxt=['라뜰리에 김가, #빵집  #카페 , 강원도 춘천시 동면 만천리 326-3','감자밭, #감자빵  #카페  #혼카페, 강원도 춘천시 신북읍 천전리 99-13','스타벅스, #카페  #카페라떼, 강원도 춘천시 석사동 799-4'];
+	var desTxt=['위위 , #카페  #디저트, 강원도 춘천시 효자동 623-8','러블리숑숑 , #디저트  #타르트, 강원도 춘천시 칠전동 548-6','어트렉티브, #디저트  #커피, 강원도 춘천시 퇴계동 1149-7'];
+	var hanTxt=['카페 틀, #백반  #한정식, 강원도 춘천시 석사동 946-5','집밥처럼, #집밥  #한정식, 강원도 춘천시 삼천동 37-36','옛날옛집, #한우불고기 #한정식, 강원도 춘천시 동면 만천리 638-2'];
+	var yangTxt=['어반스트릿 컨템포러리, #피자  #양식, 강원도 춘천시 동내면 거두리 1113-6','엘이구아나, #멕시코  #양식, 강원도 춘천시 운교동 170-3','홍익돈까스 춘천점, #돈까스  #양식, 강원도 춘천시 석사동 843-3'];
+	var ilTxt=['마코토, #초밥  #일식, 강원도 춘천시 퇴계동 1082','스시장, #초밥  #일식, 강원도 춘천시 효자동 694-11','철든식탁, #철판  #일식, 강원도 춘천시 운교동 79-63'];
+	var jungTxt=['회영루,#중식  #냉면, 강원도 춘천시 낙원동 14-2','보문각,#중식  #비빔국수, 강원도 춘천시 약사동 67-2','마라쿵푸, #중식  #훠궈, 강원도 춘천시 온의동 15-1'];
+	var meetTxt=['통나무집닭갈비, #철판닭갈비  #고기, 강원도 춘천시 신북읍 천전리 38-26','원조숯불닭불고기, #숯불닭갈비  #고기, 강원도 춘천시 중앙로2가 70','토담숯불닭갈비, #닭갈비  #고기, 강원도 춘천시 신북읍 천전리 90-12'];
+	var nightTxt=['러스틱 컴포트, #생맥주  #술집, 강원도 춘천시 석사동 726-12','페이크러버스, #칵테일  #술집, 강원도 춘천시 교동 150-6','생활맥주, #수제맥주  #술집, 강원도 춘천시 온의동 6-40'];
+	var natTxt=['남이섬, #관광지  #자연, 강원도 춘천시 남산면 남이섬길 1','소양강, #자연  #강, 강원도 춘천시 신북읍과 동면','제이가든 수목원, #자연  #수목원,  강원도 춘천시 남산면 햇골길 80'];
+	var landTxt=['춘천 명동 닭갈비 골목, #닭갈비 골목  #랜드마크, 강원도 춘천시 조운동 명동길 9','청평사, #랜드마크  #사찰, 강원도 춘천시 북산면 청평리 674','소양강 스카이워크, #랜드마크  #유리 보도, 강원도 춘천시 근화동 영서로 2675'];
+	var parkTxt=['애니메이션 박물관, #애니매이션  #박물관, 강원도 춘천시 서면 박사로 854','국립춘천박물관, #춘천  #박물관, 강원도 춘천시 석사동 우석로 70','에티오피아 한국 참전기념관, #에티오피아  #박물관, 강원도 춘천시 근화동 이디오피아길 1'];
+	var playTxt=['육림랜드,#놀이공원  #춘천, 강원도 춘천시 사농동 61-2'];
+	var shopTxt=['춘천낭만시장,#시장  #쇼핑, 강원도 춘천시 중앙로2가 42-18','춘천 명동 닭갈비 골목, #닭갈비 골목  #랜드마크, 강원도 춘천시 조운동 명동길 9'];
+	var sportTxt=['강촌레일파크, #레일바이크  #스포츠, 강원도 춘천시 신동면 증리 323-2','엘리시안 강촌 스키장, #스키  #스포츠,  강원도 춘천시 남산면 북한강변길 688','수상레저V, #레저  #스포츠, 강원도 춘천시 남산면 방하리 386-5'];
+	var carTxt=['자동차, #고속도로 , 춘천'];
+	var railTxt=['경춘선, #지하철 , 남춘천역 or 춘천역'];
+	var itxTxt=['itx, #지하철, 남춘천역 or 춘천역'];
+	var bus1Txt=['시내버스, #100  #200  #300 #400 #1 #2 #3 #4 #5 #5-1 #6 #7 ... , 춘천버스'];
+	var bus2Txt=['시외버스, #강원도 #서울 #경기도 #충청남도 #대전  ... , 시외버스 터미널'];
+	var txtArr=[cafeTxt,desTxt,hanTxt,yangTxt,ilTxt,jungTxt,meetTxt,nightTxt,natTxt,landTxt,parkTxt,playTxt,shopTxt,sportTxt,carTxt,railTxt,itxTxt,bus1Txt,bus2Txt];
+
+	//자바스크립트: 이미지 클릭시 모달창 생성.
+	document.addEventListener('click',function(e){
+		if(e.target.name=='images'){
+			var numArr=e.target.id.split(',');
+			var txts=txtArr[numArr[0]][numArr[1]].split(',');			
+			var img= document.getElementById('modalImg');
+console.log(numArr[0],numArr[1]);
+			img.src=imgArr[numArr[0]][numArr[1]];
+			
+			document.getElementById('names').innerHTML=txts[0];
+			document.getElementById('tags').innerHTML=txts[1];
+			document.getElementById('poss').innerHTML=txts[2];
+			var modal=document.querySelector('.modal-wrapper');
+			modal.style.display="flex";
+			
+
+		}
+	});
+
+	//모달창 닫기 버튼
+	function modalClose(){
+		 var modal=document.querySelector(".modal-wrapper");
+     		 modal.style.display="none";
+	}
+
+	//찜 버튼 누르면 숫자 올라가게
+	var likeNum=0;
+	function like(){
+		likeNum++;
+		document.getElementById("likeNum").innerHTML=likeNum;
+	}
+
+	//제이쿼리 이미지테이블 동적 생성.
+	$(document).ready(function (){
+		var ids=['.cafe','.dessert','.hansik','.yangsik','.ilsik','.jungsik','.meet','.night','.nature','.landmark','.park','.playing','.shopping','.sports','.car','.rail','.itx','.bus1','.bus2'];
+		
+		var inner="";
+		var n=1;
+		for(var i=0; i<11; i++){
+			inner+="<tr>";
+			for(var j=0; j<imgArr[i].length; j++){
+				inner+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+			}
+			inner+="</tr>";
+		}
+		for(var i=11; i<19; i++){
+			for(var j=0; j<imgArr[i].length; j++){
+				if(n==4 || n==1){ inner+="<tr>"; console.log('hi',n);}
+				inner+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+				console.log(n);
+				n++;
+				if(n==4 || n==7 || n==10){inner+="</tr>";console.log('by',n);}
+			}
+					
+		}
+		$('.context').append(inner);
+		inner="";
+		
+
+		//먹거리,볼거리,놀거리,교통거리 클릭하면 각 카테고리 생성 및 이미지 나열.
+		$('a[href="#"]').click(function(e){
+			var insert="";
+			var ins="";
+
+			e.preventDefault();
+			$('.menu').empty();
+			$('.context').empty();
+
+			if(e.target.innerHTML=='#먹거리'){
+				insert+="<td class='cafe'><a href='#' id='menuTxt'><img src='images/cafe.png'><br>카페</a></td>";
+				insert+="<td class='dessert'><a href='#' id='menuTxt'><img src='images/dessert.png'><br>디저트</a></td>";
+				insert+="<td class='hansik'><a href='#' id='menuTxt'><img src='images/hansik.jpg'><br>한식</a></td>";
+				insert+="<td class='yangsik'><a href='#' id='menuTxt'><img src='images/yangsik.png'><br>양식</a></td>";
+				insert+="<td class='ilsik'><a href='#' id='menuTxt'><img src='images/ilsik.png'><br>일식</a></td>";
+				insert+="<td class='jungsik'><a href='#' id='menuTxt'><img src='images/jungsik.jpg'><br>중식</a></td>";
+				insert+="<td class='meet'><a href='#' id='menuTxt'><img src='images/meet.jpg'><br>고기</a></td>";
+				insert+="<td class='night'><a href='#' id='menuTxt'><img src='images/night.png'><br>주점</a></td>";
+		
+				for(var i=0; i<8; i++){
+					ins+="<tr>";
+					for(var j=0; j<imgArr[i].length; j++){
+						ins+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+					}
+					ins+="</tr>";
+				}
+			}else if(e.target.innerHTML=='#볼거리'){
+				insert+="<td class='nature'><a href='#' id='menuTxt'><img src='images/nature.jpg'><br>자연</a></td>";
+				insert+="<td class='landmark'><a href='#' id='menuTxt'><img src='images/landmark.jpg'><br>랜드마크</a></td>";
+				insert+="<td class='park'><a href='#' id='menuTxt'><img src='images/park.png'><br>박물관</a></td>";
+				for(var i=8; i<11; i++){
+					ins+="<tr>";
+					for(var j=0; j<imgArr[i].length; j++){
+						ins+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+					}
+					ins+="</tr>";
+				}
+			}else if(e.target.innerHTML=='#놀거리'){
+				insert+="<td class='playing'><a href='#' id='menuTxt'><img src='images/playing.png'><br>놀이공원</a></td>";
+				insert+="<td class='shopping'><a href='#' id='menuTxt'><img src='images/shopping.jpg'><br>쇼핑</a></td>";
+				insert+="<td class='sports'><a href='#' id='menuTxt'><img src='images/sports.jpg'><br>스포츠</a></td>";
+				var n=1;
+				for(var i=11; i<14; i++){
+					for(var j=0; j<imgArr[i].length; j++){
+						if(n==4 || n==1){ ins+="<tr>";  }
+						ins+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+						n++;
+						if(n==4 || n==7){ins+="</tr>";}
+					}
+					
+				}
+			}else if(e.target.innerHTML=='#교통거리'){
+				insert+="<td class='car'><a href='#' id='menuTxt'><img src='images/car.jpg'><br>자차</a></td>";
+				insert+="<td class='rail'><a href='#' id='menuTxt'><img src='images/rail.png'><br>경춘선</a></td>";
+				insert+="<td class='itx'><a href='#' id='menuTxt'><img src='images/itx.jpg'><br>ITX</a></td>";
+				insert+="<td class='bus1'><a href='#' id='menuTxt'><img src='images/bus1.png'><br>시내버스</a></td>";
+				insert+="<td class='bus2'><a href='#' id='menuTxt'><img src='images/bus2.jpg'><br>시외버스</a></td>";	
+				var n=1;
+				for(var i=14; i<19; i++){
+					for(var j=0; j<imgArr[i].length; j++){
+						if(n==4 || n==1){ ins+="<tr>";  }
+						ins+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";	
+						n++;
+						if(n==4 || n==7){ins+="</tr>"; }
+					}
+				}
+				
+			}
+			$('.menu').append(insert);
+			$('.context').append(ins);
+
+			//카테고리들 클릭하면 해당 카테고리 이미지만 뜨게 설정.
+			for(var i=0; i<ids.length; i++){
+				(function(i){ $(document).on('click',ids[i],function(e){
+					var ins="";
+					$('.context').empty();
+					for(var j=0; j<imgArr[i].length; j++){
+						ins+="<td><img name='images' id="+String(i)+","+String(j)+" src='"+imgArr[i][j]+"'></td>";
+					}
+					$('.context').append(ins);
+				});
+				})(i);
+			}
+		});
+
+		
+	});
+	
+	
+</script>
+
+</head>
+<body >
+	<a href=""><img id="logo" src="images/logo.jpg"></a>
+	<table border='0'>
+		<tr><td>춘천</td><td><input type="button" value="찜하기" onclick="like()"></td></tr>
+		<tr><td>게시물: 44</td><td>찜: <span id="likeNum">0</span></td></tr>
+		<tr><td>청춘을 소개하다.</td><td><a href="http://www.chuncheon.go.kr/index.chuncheon" style="font-size:13px;">▶춘천시청 바로가기</a></td></tr>
+		<tr>
+			<td ><a href="#">#먹거리</a></td>
+			<td ><a href="#">#볼거리</a></td>
+			<td ><a href="#">#놀거리</a></td>
+			<td ><a href="#">#교통거리</a></td>
+		</tr>
+	</table>
+	<br><br><br><br>
+	<table class='menu'></table>
+	<br><br>
+	<div id="hrs"><hr>  게시글  <hr></div>
+	<div id="tabDiv"><table class='context'></table></div>
+	<div class="modal-wrapper" style="display:none">
+		<div class="modal">
+			<img class="modalImg" id="modalImg">
+			<table class='modalTable'>
+				<tr><td><span id='names'>이름</span></td></tr>
+				<tr><td><span id='tags'>해시태그</span></td></tr>
+				<tr><td><span id='poss'>위치</span></td></tr>
+			</table>
+			<span class="close" onclick="modalClose()">x</span> 
+		</div>
+	</div>
+</body>
+</html>
